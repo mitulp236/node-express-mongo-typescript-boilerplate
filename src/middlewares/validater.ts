@@ -32,7 +32,6 @@ function validationMiddleware<T>(
                             ),
                         )
                         .join( ", " );
-                    //next(new HttpException(400, message));
                     res.status( 400 ).send( new HttpException( 400, message ) );
                 } else
                 {

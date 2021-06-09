@@ -3,6 +3,8 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as cors from "cors";
 import * as path from "path";
+import * as swaggerUi from "swagger-ui-express"
+const swaggerDocument = require( '../swagger.json' );
 import * as helmet from "helmet";
 import "./config/env";
 import routes from "./routes";
@@ -27,6 +29,7 @@ mongoose
         app.use( bodyParser.urlencoded( { extended: true } ) );
 
         // routes
+        app.use( '/api-docs', swaggerUi.serve, swaggerUi.setup( swaggerDocument ) );
         app.use( "/api", routes );
 
         // server settings

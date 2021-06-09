@@ -6,8 +6,10 @@ interface User extends Document {
     lastName: string;
     email: string;
     password: string;
+    role: string;
     resetToken: string;
     expireToken: Date;
+    isVerify: boolean;
     isActive: boolean;
 }
 

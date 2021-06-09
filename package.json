@@ -19,6 +19,7 @@
     "@types/jsonwebtoken": "^8.5.1",
     "@types/mongoose": "^5.11.97",
     "@types/nodemailer": "^6.4.2",
+    "@types/swagger-ui-express": "^4.1.2",
     "body-parser": "^1.19.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
@@ -30,7 +31,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.13",
     "nodemailer": "^6.6.1",
-    "nodemailer-smtp-transport": "^2.7.4"
+    "nodemailer-smtp-transport": "^2.7.4",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "@types/node": "^15.12.1",

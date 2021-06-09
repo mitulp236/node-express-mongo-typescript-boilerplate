@@ -12,9 +12,11 @@ const UserSchema = new Schema( {
     lastName: { type: String, required: true },
     email: { type: String, unique: true, index: true },
     password: { type: String, required: true },
+    role: { type: String, default: false },
     resetToken: String,
     expireToken: Date,
-    isActive: Boolean,
+    isVerify: { type: Boolean, default: true },
+    isActive: { type: Boolean, default: true },
 }, { timestamps: true } );
 
 const UserModel: IUserModel = ( model<IUser & IUserModel>(
