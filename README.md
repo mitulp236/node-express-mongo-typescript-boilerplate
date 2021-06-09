@@ -14,7 +14,7 @@ The idea behind this project lies in simplicity. It is the template for a generi
 Clone the project
 
 ```bash
-  git clone https://github.com/mitulp236/node-mongo-typescript-boilerplate
+  git clone https://github.com/mitulp236/node-express-mongo-typescript-boilerplate.git
 ```
 
 Go to the project directory
