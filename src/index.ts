@@ -8,9 +8,15 @@ const swaggerDocument = require( '../swagger.json' );
 import * as helmet from "helmet";
 import "./config/env";
 import routes from "./routes";
+import logger from "./logger";
 
 export const root = __dirname;
 export const app = express();
+
+logger.info("information log")
+logger.warn("warning log")
+logger.error("error log")
+logger.debug("debug log")
 
 mongoose
     .connect( process.env.DATABASEURI, {
