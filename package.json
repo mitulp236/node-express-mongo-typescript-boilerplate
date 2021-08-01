@@ -5,10 +5,10 @@
   "license": "ISC",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "rimraf ./build && tsc",
+    "build": "tsc --build",
     "dev": "nodemon ts-node ./src/index.ts",
     "tsc": "tsc",
-    "prod": "tsc && node ./build/app.js"
+    "prod": "cp -r .env ./build/ && node ./build/index.js"
   },
   "dependencies": {
     "@types/body-parser": "^1.19.0",
