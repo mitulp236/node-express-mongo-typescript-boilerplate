@@ -13,11 +13,6 @@ import logger from "./logger";
 export const root = __dirname;
 export const app = express();
 
-logger.info("information log")
-logger.warn("warning log")
-logger.error("error log")
-logger.debug("debug log")
-
 mongoose
     .connect( process.env.DATABASEURI, {
         useNewUrlParser: true,

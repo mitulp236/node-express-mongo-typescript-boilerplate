@@ -86,6 +86,7 @@ dist
 
 # build files
 .build
+build
 
 # Gatsby files
 .cache/
