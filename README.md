@@ -44,7 +44,7 @@ To run this project, you will need to add the following environment variables to
 
 `PORT`
 `DATABASEURI`
-`HOSTNAME`
+`HOST_NAME`
 `FRONT_END_BASE_URL`
 
 If you want to setup email, then add below variables as well.

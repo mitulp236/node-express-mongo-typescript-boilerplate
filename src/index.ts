@@ -35,9 +35,9 @@ mongoose
 
         // server settings
         app.set( "port", process.env.PORT || 4000 );
-        app.listen( app.get( "port" ), process.env.HOSTNAME, () => {
+        app.listen( app.get( "port" ), process.env.HOST_NAME, () => {
             console.log(
-                "App is running at " + process.env.HOSTNAME + ":%d in %s mode",
+                "App is running at " + process.env.HOST_NAME + ":%d in %s mode",
                 app.get( "port" ),
                 app.get( "env" ),
             );
