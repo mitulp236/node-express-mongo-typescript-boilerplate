@@ -5,55 +5,35 @@
         "description": "for changing project edit swagger.json file on root directory",
         "version": "1.0"
     },
+    "host": "localhost:5000",
+    "basePath": "/api",
     "produces": [
         "application/json"
     ],
     "paths": {
-        "/test": {
+        "/login": {
             "post": {
                 "x-swagger-router-controller": "home",
                 "operationId": "index",
                 "tags": [
-                    "/test"
+                    "/auth"
                 ],
-                "description": "[Login 123](https://www.google.com)",
+                "description": "",
                 "parameters": [
                     {
-                        "name": "test",
-                        "in": "formData",
-                        "type": "array",
-                        "collectionFormat": "multi",
-                        "items": {
-                            "type": "integer"
-                        }
+                        "name": "email",
+                        "type": "string",
+                        "required": true                        
                     },
                     {
-                        "name": "profileId",
-                        "in": "formData",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "file",
-                        "in": "formData",
-                        "type": "file",
-                        "required": "true"
+                        "name": "password",
+                        "type": "string",
+                        "required": true                        
                     }
                 ],
                 "responses": {}
             }
-        },
-        "/bar": {
-            "get": {
-                "x-swagger-router-controller": "bar",
-                "operationId": "impossible",
-                "tags": [
-                    "/test"
-                ],
-                "description": "",
-                "parameters": [],
-                "responses": {}
-            }
         }
+        
     }
 }

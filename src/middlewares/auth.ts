@@ -17,11 +17,11 @@ export const auth = async ( req: RequestWithUser, res: Response, next: NextFunct
         if ( user )
         {
             req.user = user;
-            if ( req.user.isVerify == false )
+            if ( req.user.isDeleted == false )
             {
                 res.status( 403 ).send( { "message": "You are not verify.", data: { isverify: false } } );
             }
-            else if ( req.user.isActive == false )
+            else if ( req.user.emailVerificationStatus == false )
             {
                 res.status( 403 ).send( { "message": "You are inactive.", data: { isactive: false } } );
             }
