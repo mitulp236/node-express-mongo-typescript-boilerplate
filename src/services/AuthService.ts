@@ -1,20 +1,15 @@
-import { dontAllowPreviouslyUsedPassword } from "../config/config";
 import config from "../config/config";
 import * as jwt from "jsonwebtoken";
 import * as _ from "lodash"
 import * as bcrypt from "bcrypt";
 import * as moment from "moment"
-import DataStoredInToken from "../interfaces/DataStoredInToken";
-import TokenData from "../interfaces/TokenData";
-import User from "../model/User/user.interface";
 import UserModel from "../model/User/user.model";
-import UserService from "./UserService";
-import { Console } from "console";
+import * as i18n from "i18n"
+import * as commonlyUsedPassword from "../config/commonlyUsedPassword.json"
 
 class AuthService {
 
     private user = UserModel;
-    private userService = UserService;
 
     authentication = async ( email: string, password: string ) => {
 		const encryptedPassword = await this.encryptPassword(password);
@@ -39,13 +34,29 @@ class AuthService {
         });
 	}
 
-    generateRefreshToken( id: string ): Promise<any> {
+    generateForgotToken( id: string ): Promise<any> {
 		return new Promise(async (resolve, reject) => {
             try {
                 const data = jwt.sign({
                     id,
                     algorithm: config.tokenAlgorithm,
                     exp: Math.floor(Date.now() / 1000) + parseInt(config.tokenExpirationTime)
+                }, config.resetPasswordSecret);
+                return resolve({ status: 1, data });
+            } catch (error) {
+                console.error('error In ====>>>> generateForgotToken <<<<====', error);
+                return reject({ status: 0, error });
+            }
+        });
+	}
+
+    generateRefreshToken( id: string ): Promise<any> {
+		return new Promise(async (resolve, reject) => {
+            try {
+                const data = jwt.sign({
+                    id,
+                    algorithm: config.tokenAlgorithm,
+                    exp: Math.floor(Date.now() / 1000) + parseInt(config.refreshTokenExpirationTime)
                 }, config.jwtRefreshTokenSecret);
                 return resolve({ status: 1, data });
             } catch (error) {
@@ -88,7 +99,7 @@ class AuthService {
             try {
                 const salt = 10;
                 if (password && password !== "") {
-                    const encryptedPassword = await bcrypt.hash( password, salt );
+                    const encryptedPassword = bcrypt.hashSync( password, salt );
                     return resolve(encryptedPassword);
                 }
                 throw new Error('Password shound not be empty or blank')
@@ -100,30 +111,41 @@ class AuthService {
 	}
 
 	validatePassword( data: any ): any {
-		try {
-			if (data && data.password) {
-				if (data.firstName && _.isEqual(data.password, data.firstName)) {
-					return { status: 0, message: i18n.__("PASSWORD_NOT_SAME_FIRSTNAME") };
-				}
-				// Check new password is already used or not
-				// if (dontAllowPreviouslyUsedPassword && data.userObj && data.userObj.previouslyUsedPasswords && Array.isArray(data.userObj.previouslyUsedPasswords) && data.userObj.previouslyUsedPasswords.length) {
-				// 	let isPreviouslyUsed = _.filter(data.userObj.previouslyUsedPasswords, (previouslyUsedPassword) => {
-				// 		let base64data = Buffer.from(previouslyUsedPassword, 'binary').toString();
-				// 		return bcrypt.compareSync(data.password, base64data)
-						
-				// 	});
-				// 	if (isPreviouslyUsed && Array.isArray(isPreviouslyUsed) && isPreviouslyUsed.length) {
-				// 		return resolve({ status: 0, message: i18n.__("ALREADY_USED_PASSWORD") });
-				// 	}
-				// }
-				return { status: 1, message: "Valid password." };
-			} else {
-				return { status: 0, message: "Password required." };
-			}
-		} catch (error) {
-			console.log("===> ",error)
-			return { status: 0, message: "Password not valid" };;
-		}
+
+        return new Promise(async (resolve, reject) => {
+            try {
+                if (data && data.password) {
+                    if (data.firstName && _.isEqual(data.password, data.firstName)) {
+                        resolve({ status: 0, error: i18n.__("PASSWORD_NOT_SAME_FIRSTNAME") });
+                    }
+                    // Check new password is already used or not
+                    if (config.dontAllowPreviouslyUsedPassword && data.userObj && data.userObj.previouslyUsedPasswords && Array.isArray(data.userObj.previouslyUsedPasswords) && data.userObj.previouslyUsedPasswords.length) {
+                        for (let i = 0; i < data.userObj.previouslyUsedPasswords.length; i++) {
+                            const usedPassword = data.userObj.previouslyUsedPasswords[i];
+                            const valid_password = bcrypt.compareSync(
+                                data.password,
+                                usedPassword,
+                            );
+                            if(valid_password){
+                                resolve({ status: 0, error: i18n.__("ALREADY_USED_PASSWORD") });
+                            }
+                        }
+                    }
+                    if(commonlyUsedPassword && Array.isArray(commonlyUsedPassword["passwords"])) {
+                        const isCommanPassword = commonlyUsedPassword["passwords"].includes(data.password)
+                        if(isCommanPassword) {
+                            resolve({ status: 0, error: i18n.__("COMMON_PASSWORD") });
+                        }
+                    }
+                    
+                    resolve({ status: 1, message: i18n.__("VALID_PASSWORD") })
+                } else {
+                    resolve({ status: 0, error:  i18n.__("PASSWORD_REQUIRED")  })
+                }
+            } catch (error) {
+                reject({ status: 0, error:  i18n.__("PASSWORD_NOTVALID")  });
+            }
+        });
 
 	}
 }

@@ -6,7 +6,9 @@ export default {
     year: "YYYY",
     tokenAlgorithm: 'HS256',
     // In minutes = 20 hours
-    tokenExpirationTime: '1200',
+    tokenExpirationTime: '12000',
+    refreshTokenExpirationTime: '360000',
+    dontAllowPreviouslyUsedPassword: true
 };
 
 export enum Role {
@@ -15,4 +17,3 @@ export enum Role {
     USER = "USER",
 }
 
-export const dontAllowPreviouslyUsedPassword = true;

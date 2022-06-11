@@ -19,7 +19,7 @@ class UserController {
     register = async ( req: Request, res: Response ) => {
         try {
             const reqBody: CreateUserDto = req.body;
-            const { firstName, lastName, email, password, mobile, dialCode } = reqBody;
+            const {email, password, mobile } = reqBody;
             let orQuery: any = [{ email: email.toLowerCase() }];
             if (mobile && mobile != '') {
                 orQuery.push({ mobile: mobile });
@@ -37,9 +37,9 @@ class UserController {
             }
 
             /** Validate and Encrypt password **/
-            let isPasswordValid = await this.authService.validatePassword({ ...reqBody, password: password,  });
+            let isPasswordValid = await this.authService.validatePassword({ userObj: user, password: password,  });
             if (isPasswordValid && !isPasswordValid.status) {
-                return res.send(isPasswordValid);
+                return res.status(403).send(isPasswordValid);
             }
             let encryptedPassword = await this.authService.encryptPassword(password);
 
@@ -47,6 +47,7 @@ class UserController {
                 ...reqBody,
                 password: encryptedPassword,
                 passwordUpdatedAt: new Date(),
+                previouslyUsedPasswords: [encryptedPassword],
                 role: Role.USER
             }).save();
 
