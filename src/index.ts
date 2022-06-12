@@ -3,7 +3,7 @@ import * as express from "express";
 import * as cors from "cors";
 import * as path from "path";
 import * as swaggerUi from "swagger-ui-express"
-const swaggerDocument = require( '../swagger.json' );
+import * as swaggerJsdoc from "swagger-jsdoc"
 import * as helmet from "helmet";
 import "./config/env";
 import routes from "./routes";
@@ -43,7 +43,31 @@ mongoose
 
         // routes
         if(process.env.NODE_ENV !== 'production') {
-            app.use( '/api-docs', swaggerUi.serve, swaggerUi.setup( swaggerDocument ) );
+            const swaggerOptions = {
+                swaggerDefinition: {
+                    info: {
+                    version: "2.0.0",
+                    title: "Node API",
+                    description: "API documentation",
+                    contact: {
+                        name: "Mitul Patel"
+                    },
+                    
+                    }
+                },
+                basePath: "/api",
+                servers: [
+                    {
+                        "url": `http://localhost:${process.env.PORT || 4000}/api`,
+                        "description": "local server"
+                    },
+                ],
+                // ['.routes/*.js']
+                apis: ["./src/routes/*.*"]
+            };
+              
+              const swaggerDocs = swaggerJsdoc(swaggerOptions);
+              app.use( '/api-docs', swaggerUi.serve, swaggerUi.setup( swaggerDocs ) );
         }
         app.use( "/api", routes );
 

@@ -1,18 +1,18 @@
 import { Request, Response } from "express";
 import * as bcrypt from "bcrypt";
 import * as i18n from "i18n"
-import LoginDto from "../dto/Login.dto";
+import LoginDto from "../dto/Auth/Login.dto";
 import WrongCredentialsException from "../exceptions/WrongCredentialsException";
 import User from "../model/User/user.interface";
 import UserModel from "../model/User/user.model";
 import AuthService from "../services/AuthService";
 import CommonService from "../services/CommonService";
 import UserService from "../services/UserService";
-import ForgotPasswordDto from "../dto/ForgotPassword.dto";
+import ForgotPasswordDto from "../dto/Auth/ForgotPassword.dto";
 import config from "../config/config";
-import ForgotPasswordVerifyDto from "../dto/ForgotPasswordVerifyToken.dto";
+import ForgotPasswordVerifyDto from "../dto/Auth/ForgotPasswordVerifyToken.dto";
 import RequestWithUser from "../interfaces/RequestWithUser";
-import ChangePasswordDto from "../dto/ChangePassword.dto";
+import ChangePasswordDto from "../dto/Auth/ChangePassword.dto";
 
 class AuthController {
 

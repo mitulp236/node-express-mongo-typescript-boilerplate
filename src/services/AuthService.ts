@@ -18,11 +18,11 @@ class AuthService {
         return user;
     }
 
-    generateToken( id: string ): Promise<any> {
+    generateToken( _id: string ): Promise<any> {
 		return new Promise(async (resolve, reject) => {
             try {
                 const data = jwt.sign({
-                    id,
+                    _id,
                     algorithm: config.tokenAlgorithm,
                     exp: Math.floor(Date.now() / 1000) + parseInt(config.tokenExpirationTime)
                 }, config.jwtSecret);
@@ -34,11 +34,11 @@ class AuthService {
         });
 	}
 
-    generateForgotToken( id: string ): Promise<any> {
+    generateForgotToken( _id: string ): Promise<any> {
 		return new Promise(async (resolve, reject) => {
             try {
                 const data = jwt.sign({
-                    id,
+                    _id,
                     algorithm: config.tokenAlgorithm,
                     exp: Math.floor(Date.now() / 1000) + parseInt(config.tokenExpirationTime)
                 }, config.resetPasswordSecret);
@@ -50,11 +50,11 @@ class AuthService {
         });
 	}
 
-    generateRefreshToken( id: string ): Promise<any> {
+    generateRefreshToken( _id: string ): Promise<any> {
 		return new Promise(async (resolve, reject) => {
             try {
                 const data = jwt.sign({
-                    id,
+                    _id,
                     algorithm: config.tokenAlgorithm,
                     exp: Math.floor(Date.now() / 1000) + parseInt(config.refreshTokenExpirationTime)
                 }, config.jwtRefreshTokenSecret);
@@ -77,14 +77,14 @@ class AuthService {
         });
 	}
 
-	getUpdatedUserWithTokens(id: string): Promise<any> {
+	getUpdatedUserWithTokens(_id: string): Promise<any> {
 		return new Promise(async (resolve, reject) => { 
 			try {
-				const token = await this.generateToken( id );
-				const refreshToken = await this.generateRefreshToken( id );
+				const token = await this.generateToken( _id );
+				const refreshToken = await this.generateRefreshToken( _id );
 				const tokenExpiryTime = await this.getTokenExpiryTime();
 
-				const updatedUser = await this.user.findByIdAndUpdate(id, { token: token.data, refreshToken: refreshToken.data, tokenExpiryTime: tokenExpiryTime.data }, { new: true })
+				const updatedUser = await this.user.findByIdAndUpdate(_id, { token: token.data, refreshToken: refreshToken.data, tokenExpiryTime: tokenExpiryTime.data }, { new: true })
 
 				return resolve(updatedUser)
 			} catch (error) {

@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import * as i18n from "i18n"
 import { AnyArray } from "mongoose";
 import config, { Role } from "../config/config";
-import CreateUserDto from "../dto/createUser.dto";
-import LoginDto from "../dto/Login.dto";
+import CreateUserDto from "../dto/User/CreateUser.dto";
+import LoginDto from "../dto/Auth/Login.dto";
 import WrongCredentialsException from "../exceptions/WrongCredentialsException";
 import UserModel from "../model/User/user.model";
 import AuthService from "../services/AuthService";

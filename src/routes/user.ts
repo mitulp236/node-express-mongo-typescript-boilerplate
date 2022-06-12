@@ -1,6 +1,6 @@
 import { Router } from "express";
 import UserController from "../controller/UserController";
-import CreateUserDto from "../dto/createUser.dto";
+import CreateUserDto from "../dto/User/CreateUser.dto";
 import validationMiddleware from "../middlewares/validater";
 const router = Router();
 
